@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../About/css/bootstrap.min.css">
+	<link href="../About/css/myCss.css" type="text/css" rel="stylesheet">
+	<link href="../About/css/main.css" type="text/css" rel="stylesheet">
+	<link href="../About/css/base.css" type="text/css" rel="stylesheet">
+	<!--按钮样式表-->
+	<link href="../About/css/btn.css" type="text/css" rel="stylesheet">
+	<link href="../About/css/css.css" type="text/css" rel="stylesheet">
+	<link href="../About/css/index.css" type="text/css" rel="stylesheet">
+	<link href="../About/css/search.css" type="text/css" rel="stylesheet">
+	<script src="../About/js/jquery.min.js"></script>
+	<script src="../About/js/bootstrap.min.js"></script>
+
+	<script src="../node_modules/axios/dist/axios.js"></script>
+	<script src="../node_modules/vue/dist/vue.global.js"></script>
+
+	<title>入住登记</title>
+	<script type="text/javascript">
+		$(function () {
+
+		})
+	</script>
+</head>
+
+<body>
+	<div class="hlnr page" id="app">
+		<div class="col-md-12 pd20 RightContentBody fmt10">
+			<div class="col-md-3 pd0 fmt5">
+				<div class="input-group inputWidth_search">
+					<input type="text" class="form-control" placeholder="客户姓名" v-model="queryCustormer">
+					<span class="input-group-addon" v-on:click="query">查询</span>
+				</div>
+			</div>
+			<div class="col-md-9 pd0 fmt5">
+				<button class="btn btn-primary" data-toggle="modal" data-target=".myModal1"
+					v-on:click="newCustomer"><span class="glyphicon glyphicon-plus"></span>&nbsp;登记</button>
+			</div>
+			<div class="modal fade myModal1">
+				<div class="modal-dialog">
+					<div class="modal-content" style="width:100%;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<span class="glyphicon glyphicon-pencil"></span>&nbsp;【入住登记】
+						</div>
+						<div class="modal-body clearfix" style="height: auto;">
+							<div class="col-md-12 pd0">
+								<div class="col-md-1 pd0 mt10"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;客户姓名：</span>
+											<input type="text" class="form-control" placeholder="请输入【客户姓名】信息"
+												v-model="customerName">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;年龄：</span>
+											<input type="text" class="form-control" placeholder="请输入【年龄】信息"
+												v-model="customerAge">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;性别：</span>
+											<select class="form-control" v-model="customerGender">
+												<option value="1">男</option>
+												<option value="0">女</option>
+
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;身份证号：</span>
+											<input type="text" class="form-control" placeholder="请输入【身份证号】信息"
+												v-model="idcard">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;房间号：</span>
+											<input type="text" class="form-control" placeholder="请输入【房间号】信息"
+												v-model="roomNumber">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;所属楼房：</span>
+											<input type="text" class="form-control" placeholder="请输入【所属楼房】信息"
+												v-model="buildingId">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;档案号：</span>
+											<input type="text" class="form-control" placeholder="请输入【档案号】信息"
+												v-model="recordId">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;老人类型：</span>
+											<select class="form-control" v-model="elderType">
+												<option value="活力老人">活力老人</option>
+												<option value="自理老人">自理老人</option>
+												<option value="护理老人">护理老人</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;入住时间：</span>
+											<input type="date" class="form-control" v-model="checkinDate">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;合同到期时间：</span>
+											<input type="date" class="form-control" v-model="expirationDate">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;联系电话：</span>
+											<input type="text" class="form-control" placeholder="请输入【联系电话】信息"
+												v-model="contactTel">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+
+							<div class="col-md-12 pd0 mt10">
+								<div class="col-md-1 pd0"></div>
+								<div class="col-md-10 pd0">
+									<div class="col-md-12 pd0">
+										<div class="input-group inputWidth">
+											<span class="input-group-addon titleWidth">&nbsp;&nbsp;备注：</span>
+											<input type="text" class="form-control" aria-describedby="basic-addon1"
+												v-model="attention">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1 pd0"></div>
+							</div>
+						</div>
+						<div class="modal-footer mt20">
+							<button type="button" class="btn btn-primary" data-dismiss="modal"
+								v-on:click="addOrUpdateCustomer()">
+								确定
+							</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								取消
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 pd0 fmt10">
+				<hr class="commonHRCss" />
+			</div>
+			<div class="col-md-12 pd0">
+				<ul id="myTab" class="nav nav-pills">
+					
+					
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade in active" id="hllr">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>客户姓名</th>
+									<th>性别</th>
+									<th>年龄</th>
+									<th>身份证号</th>
+									<th>房间号</th>
+									<th>所属楼房</th>
+									<th>档案号</th>
+									<th>入住时间</th>
+									<th>合同到期时间</th>
+									<th>联系电话</th>
+									<th>备注</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(item, index) in consumerList" :key="index">
+									<td>{{index+1}}</td>
+									<td>{{item.customerName}}</td>
+									<td>{{item.customerGender==0? '女' : '男'}} </td>
+									<td>{{item.customerAge}}</td>
+									<td>{{item.idcard}}</td>
+									<td>{{item.roomNumber}}</td>
+									<td>{{item.buildingId}}</td>
+									<td>{{item.recordId}}</td>
+									<td>{{item.checkinDate}}</td>
+									<td>{{item.expirationDate}}</td>
+									<td>{{item.contactTel}}</td>
+									<td>
+										<button class="btn btn-primary" data-toggle="modal" data-target=".myModal1" @click="modify(item.id,index)">修改</button>
+										<button class="btn btn-danger" @click="remove(item.id)">删除</button>
+									</td>
+								</tr>
+							</tbody>
+							<tr>
+								<td colspan="13">总记录数：{{total}}</td>
+							</tr>
+						</table>
+					</div>
+					
+				</div>
+
+			</div>
+			<div class="col-md-12 pd0">
+				<div class="col-md-12 text-right pd0 fmt20">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li @click="previousPage">
+								<a href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li v-for="(item, index) in pages" :key="index"><a v-on:click="listCustomer(index+1, size)">{{ index+1 }}</a></li>
+							
+							<li @click="nextPage">
+								<a href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</body>
+
+<script>
+	const app = Vue.createApp({
+			data: function () {
+				return {
+					queryCustormer: '',
+					currentPage: 1,
+					size: 10,
+					consumerList: [],
+					pages: 0,
+					total: 0,
+					// 表单数据
+					id: null,
+					customerName: '',
+					customerAge: null,
+					customerGender: null,
+					idcard: null,
+					roomNumber: null,
+					buildingId: null,
+					recordId: null,
+					elderType: null,
+					checkinDate: null,
+					expirationDate: null,
+					contactTel: null,
+					attention: null
+				}
+			},
+			methods: {
+				query() {
+					if (this.queryCustormer) {
+						axios.get("http://localhost:8080/querycustomer", { params: { name: this.queryCustormer } })
+							.then(res => {
+								this.consumerList = res.data.customers || [];
+								this.total = res.data.total || 0;
+								this.pages = Math.ceil(this.total / this.size); // 计算总页数
+							})
+							.catch(err => {
+								console.error(err);
+							});
+					} else {
+						this.listCustomer(this.currentPage, this.size);
+					}
+				},
+
+				nextPage() {
+					if (this.currentPage < this.pages) {
+						this.currentPage++;
+						this.listCustomer(this.currentPage, this.size);
+					}
+				},
+				previousPage() {
+					if (this.currentPage > 1) {
+						this.currentPage--;
+						this.listCustomer(this.currentPage, this.size);
+					}
+				},
+				remove(id) {
+					axios.delete("http://localhost:8080/removecustomer", { params: { id } })
+						.then(res => {
+							if (res.data === 'success') {
+								this.listCustomer(this.currentPage, this.size);
+							}
+						})
+						.catch(err => {
+							console.error(err);
+						});
+				},
+				listCustomer(page, size) {
+					this.currentPage = page;
+					axios.get("http://localhost:8080/listcustomer", { params: { page, size } })
+						.then(res => {
+							this.consumerList = res.data.customers || [];
+							this.total = res.data.total || 0;
+							this.pages = Math.ceil(this.total / size); // 计算总页数
+						})
+						.catch(err => {
+							console.error(err);
+						});
+				},
+				newCustomer() {
+					var c=this.consumerList[index]
+					this.id=null;
+					this.customerName =null;
+					this.customerAge =null;
+					this.customerGender=null;
+					this.idcard =null;
+					this.roomNumber =null;
+					this.buildingId =null;
+					this.recordId =null;
+					this.elderType =null;
+					this.checkinDate =null;
+					this.expirationDate =null;
+					this.contactTel=null;
+					this.attention = null;
+				},
+				modify(id,index) {
+					var c=this.consumerList[index]
+					this.id = c.id;
+					this.customerName =c.customerName
+					this.customerAge =c.customerAge
+					this.customerGender=c.customerGender
+					this.idcard =c.idcard
+					this.roomNumber =c.roomNumber
+					this.buildingId = c.buildingId
+					this.recordId =c.recordId
+					this.elderType =c.elderType
+					this.checkinDate =c.checkinDate
+					this.expirationDate =c.expirationDate
+					this.contactTel=c.contactTel
+					this.attention = c.attention
+				},
+				addOrUpdateCustomer() {
+					const data = {
+						id: this.id,
+						customerName: this.customerName,
+						customerAge: this.customerAge,
+						customerGender: this.customerGender,
+						idcard: this.idcard,
+						roomNumber: this.roomNumber,
+						buildingId: this.buildingId,
+						recordId: this.recordId,
+						elderType: this.elderType,
+						checkinDate: this.checkinDate,
+						expirationDate: this.expirationDate,
+						contactTel: this.contactTel,
+						attention: this.attention
+					};
+
+					axios.post("http://localhost:8080/saveOrUpdatecustomer", data)
+						.then(res => {
+							if (res.data === 'success') {
+								this.listCustomer(this.currentPage, this.size);
+							}
+						})
+						.catch(err => {
+							console.error(err);
+						});
+				}
+			},
+			created() {
+				this.listCustomer(this.currentPage, this.size);
+			}
+		}).mount("#app");
+
+</script>
+
+</html>

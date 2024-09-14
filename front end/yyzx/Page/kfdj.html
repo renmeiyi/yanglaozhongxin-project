@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../About/css/bootstrap.min.css">
+		<link href="../About/css/myCss.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/main.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/base.css" type="text/css" rel="stylesheet">
+		<!--按钮样式表-->
+		<link href="../About/css/btn.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/css.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/index.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/search.css" type="text/css" rel="stylesheet">
+		<script src="../About/js/jquery.min.js"></script>
+		<script src="../About/js/bootstrap.min.js"></script>
+
+		<script src="../node_modules/axios/dist/axios.js"></script>
+		<script src="../node_modules/vue/dist/vue.global.js"></script>
+
+		<title>康复登记</title>
+		<script type="text/javascript">
+		$(function(){
+
+		})
+		</script>
+	</head>
+	<body>
+       <div class="kfdj page" id="app">
+    <div class="col-md-12 pd20 RightContentBody fmt10">
+        <div class="col-md-12 pd0 fmt5">
+            <div class="input-group inputWidth_search" style="float: left;">
+                <select v-model="queryType" class="form-control">
+                    <option value="" disabled selected class="select-placeholder">选择查询类型</option>
+                    <option value="name" >姓名</option>
+                    <option value="recordId">档案号</option>
+                  </select>
+                  <input type="text" class="form-control" placeholder="请输入姓名或档案号" v-model="queryValue">
+                <span class="input-group-addon" v-on:click="query(queryType,queryValue)">快速查询</span>
+                
+            </div>
+            <div style="float: left;padding-left: 15px;">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#kfdj_t_x" v-on:click="newRecovery"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加</button>&nbsp;&nbsp;
+            </div>
+            <div style="float: left;padding-left: 15px;"></div>
+            <button type="button" class="btn btn-warning" v-on:click="restore">恢复</button>
+        </div>
+
+            <div style="float: left;padding-left: 15px;">
+                <button type="button" class="btn btn-success" 
+                v-if="showReturnButton" v-on:click="returnToPreviousPage"><span class="glyphicon glyphicon-plus"></span>&nbsp;返回</button>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="modal fade" id="kfdj_t_x" tabindex="-1" role="dialog" aria-labelledby="myHeadLabel" aria-hidden="true">
+            <div class="modal-dialog"  style="width:61%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;【康复登记信息】
+                    </div>
+                    <div class="modal-body clearfix" style="height: auto;">
+                        <div class="col-md-12 pd0">
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;档案编号：</span>
+                                        <!--<input readonly="readonly" type="text" name="csmc" id="csmc" class="form-control" value="435686543467654" aria-describedby="basic-addon1">-->
+                                        <input class="form-control" placeholder="请输入【档案编号】信息" v-model="recordId">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;姓名：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【姓名】信息" aria-describedby="basic-addon1" v-model="customerName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pd0">
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;性别：</span>
+                                        <!-- <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【性别】信息" aria-describedby="basic-addon1" v-model="customerGender"> -->
+                                        <select class="form-control"  v-model="customerGender">
+                                            <option value="" disabled selected class="select-placeholder">请选择【性别】信息</option>
+                                            <option value="男">男</option>
+                                            <option value="女">女</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;出生日期：</span>
+                                        <input type="date" name="csmc" id="csmc" class="form-control" placeholder="请输入【出生日期】信息" aria-describedby="basic-addon1" v-model="birthday">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pd0">
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;健康/身份证号：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【健康/身份证号】信息" aria-describedby="basic-addon1" v-model="idcard">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;联系方式：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【联系方式】信息" aria-describedby="basic-addon1" v-model="contactTel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pd0">
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;现住址：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【现住址】信息" aria-describedby="basic-addon1" v-model="currentAddress">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;居住环境：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【居住环境】信息" aria-describedby="basic-addon1" v-model="livingEnvironment">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pd0">
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;工作环境：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【工作】信息" aria-describedby="basic-addon1" v-model="occupation">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pd10">
+                                <div class="col-md-12 pd0">
+                                    <div class="input-group inputWidth">
+                                        <span class="input-group-addon titleWidth">&nbsp;&nbsp;爱好：</span>
+                                        <input type="text" name="csmc" id="csmc" class="form-control" placeholder="请输入【爱好】信息" aria-describedby="basic-addon1" v-model="hobbies">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer mt20">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="addOrUpdateRecovery()">
+                            确定
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 pd0 fmt10">
+            <hr class="commonHRCss"/>
+        </div>
+        <div class="col-md-12 pd0">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>档案编号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>出生日期</th>
+                        <th>健康卡号/身份证号</th>
+                        <th>联系方式</th>
+                        <th>现住址</th>
+                        <th>居住环境</th>
+                        <th>工作</th>
+                        <th>爱好</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in recoveryList" :key="index">
+                        <td>{{index+1}}</td>
+                        <td>{{item.recordId}}</td>
+                        <td>{{item.customerName}}</td>
+                        <td>{{item.customerGender}}</td>
+                        <td>{{item.birthday}}</td>
+                        <td>{{item.idcard}}</td>
+                        <td>{{item.contactTel}}</td>
+                        <td>{{item.currentAddress}}</td>
+                        <td>{{item.livingEnvironment}}</td>
+                        <td>{{item.occupation}}</td>
+                        <td>{{item.hobbies}}</td>
+                        <td>
+                            <div class="btn-group-vertical">
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#kfdj_t_x" v-on:click="modify(item.id, index)">
+                                    修改
+                                </button>
+                                <button type="button" class="btn btn-danger btn-lg"  v-on:click="remove(item.id)">
+                                    删除
+                                </button>
+                            </div>
+                        </td>
+                    </tr> 
+                    
+                </tbody>
+                <tr>
+                    <td colspan="12">总记录数：{{total}}</td>
+                    
+                </tr>
+              
+               
+            </table>
+        </div>
+        <div class="col-md-12 pd0">
+            <div class="col-md-12 text-right pd0 fmt20">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li @click="previousPage">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li v-for="(item,index) in pages":key="index"><a v-on:click="listRecovery(index+1,size)">{{index+1}}</a></li>
+                        <li @click="nextPage">
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+       </div>
+    </body>
+    <script>
+        const app=Vue.createApp({
+			data:function(){
+				return{
+					queryRecovery:'',
+					currentPage:1,
+					size:10,
+					recoveryList:null,
+					pages:0,
+					total:0,
+                    queryType:'', // 当前查询类型：'name' 或 'idcard'
+                    queryValue:'',
+                    lastDeleted:'',
+					     
+					    id:null,
+						recordId:null,
+                        customerName:'',
+						customerGender:'',
+                        birthday:null,
+						idcard:null,
+						contactTel:null,
+						currentAddress:null,
+                        livingEnvironment:null,
+                        occupation:null,
+                        hobbies:null,
+
+					
+				}
+			},
+            methods:{
+				
+				listRecovery:function(page,size){
+					this.currentPage=page
+					axios.get("http://localhost:8080/listRecovery",{params:{page,size}})
+					.then(res =>{
+						console.log(res)
+						this.recoveryList=res.data.list
+						this.pages=res.data.pages
+						this.total=res.data.total
+					})
+					.catch(err =>{
+						console.error(err);
+					})
+				},
+				newRecovery(){
+					this.id=null;
+					this.recordId=null;
+                    this.customerName=null;
+				    this.customerGender='';
+                    this.birthday=null,
+					this.idcard=null,
+					this.contactTel=null,
+					this.currentAddress=null,
+                    this.livingEnvironment=null,
+                    this.occupation=null,
+                    this.hobbies=null
+				},
+				modify(id,index){
+					var c=this.recoveryList[index]
+					this.id = c.id;
+					this.recordId=c.recordId;
+                    this.customerName=c.customerName;
+				    this.customerGender=c.customerGender;
+                    this.birthday=c.birthday,
+					this.idcard=c.idcard,
+					this.contactTel=c.contactTel,
+					this.currentAddress=c.currentAddress,
+                    this.livingEnvironment=c.livingEnvironment,
+                    this.occupation=c.occupation,
+                    this.hobbies=c.hobbies
+
+				},
+				remove:function(id){
+					axios.delete("http://localhost:8080/removeRecovery",{params:{id:id}})
+					.then(res =>{
+						if(res.data=='success'){
+                            alert("删除成功!")
+                            this.lastDeleted=id
+							this.listRecovery(this.currentPage,this.size)
+						}
+					})
+					.catch(err =>{
+						console.error(err);
+					})
+
+				},
+				addOrUpdateRecovery:function(id){
+					
+					// console.log("---------------");
+					
+					// console.log(this.newCustomer);
+					// console.log("---------------");
+					// console.log(this.msg);
+					// console.log("---------------");
+
+					data = {
+						id:this.id,
+						recordId:this.recordId,
+                        customerName:this.customerName,
+						customerGender:this.customerGender,
+                        birthday:this.birthday,
+						idcard:this.idcard,
+						contactTel:this.contactTel,
+						currentAddress:this.currentAddress,
+                        livingEnvironment:this.livingEnvironment,
+                        occupation:this.occupation,
+                        hobbies:this.hobbies
+
+					
+					}
+
+					axios.post("http://localhost:8080/insertOrUpdate",data)
+					.then(res =>{
+						if(res.data=='success'){
+                            alert("新增/修改成功!")
+							this.listRecovery(this.currentPage,this.size)
+						}
+
+					})
+					.catch(err =>{
+						console.error(err);
+					})
+
+				},
+				previousPage:function(){
+					if(this.currentPage>1){
+						this.currentPage-=1
+						this.listRecovery(this.currentPage,this.size)
+
+					}
+				},
+				nextPage:function(){
+					if(this.currentPage<this.pages){
+						this.currentPage+=1
+						this.listRecovery(this.currentPage,this.size)
+
+					}
+				},
+			
+               query:function(queryType,queryValue){
+					//console.log("--------------------------",this.queryCustormer);
+				//  if(this.queryRecovery){
+                this.queryType=queryType;
+                this.queryValue=queryValue;
+					 axios.get("http://localhost:8080/queryRecovery",{params:{queryType:queryType, queryValue:queryValue}})
+					.then(res =>{
+						if(res.data && res.data.length > 0){
+						this.recoveryList=res.data;
+						console.log(this.recoveryList);
+                        this.showReturnButton=true;
+                    }
+						else{
+                            alert("查询失败，请重试！");
+                            
+                                window.location.reload();
+                                  
+                            }
+					})
+					.catch(err =>{
+						console.error(err);
+					})
+				//   }else{
+				// 	this.listRecovery(this.currentPage,this.size);
+				//   }
+               },
+                returnToPreviousPage:function(){
+                    window.location.reload();
+                     this.listRecovery(this.currentPage,this.size)
+                    
+                },
+                // 恢复最近删除的信息的方法
+                restore: function() {
+                   if (this.lastDeleted) {
+                     // 调用后端API以恢复信息
+                      axios.delete("http://localhost:8080/restoreRecovery", {params:{ id: this.lastDeleted }})
+                   .then(res => {
+                       if (res.data == 'success') {
+                               alert("恢复成功!");
+                       // 重新获取列表以显示恢复后的信息
+                             this.listRecovery(this.currentPage, this.size);
+                             this.lastDeleted=null;
+                       }
+                    })
+                     .catch(err => {
+                       console.error(err);
+                            });
+                    } else {
+                          alert("没有可恢复的信息!");
+                    }
+                },
+
+				
+				
+
+			},
+        
+
+			created(){
+				this.listRecovery(1,10)
+			},
+        }).mount("#app")
+
+    </script>
+    <style>
+        /* 按钮组垂直排列 */
+.btn-group-vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 调整按钮大小 */
+.btn-lg {
+    padding: 6px 12px; 
+    font-size: 14px; 
+    line-height: 1.0; 
+    border-radius: 4px; 
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    margin-bottom: 3px;
+}
+
+
+    </style>
+</html> 

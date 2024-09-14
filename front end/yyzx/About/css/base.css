@@ -1,0 +1,200 @@
+*{margin: 0px;padding:0px;font-family: "Microsoft YaHei"; }
+
+.pd0{padding: 0px;}
+
+.framewidth{width:1100px;}
+
+.row1{width:100%; float: left;}
+
+.fmt1{margin-top:-1px;}
+.fmt2{margin-top:-2px;}
+.fmt3{margin-top:-3px;}
+.fmt4{margin-top:-4px;}
+.fmt5{margin-top:-5px;}
+.fmt6{margin-top:-6px;}
+.fmt7{margin-top:-7px;}
+.fmt8{margin-top:-8px;}
+.fmt9{margin-top:-9px;}
+.fmt10{margin-top: -10px;}
+.fmt11{margin-top: -11px;}
+.fmt12{margin-top: -12px;}
+.fmt13{margin-top: -13px;}
+.fmt14{margin-top: -14px;}
+.fmt15{margin-top: -15px;}
+.fmt16{margin-top: -16px;}
+.fmt17{margin-top: -17px;}
+.fmt18{margin-top: -18px;}
+.fmt19{margin-top: -19px;}
+.fmt20{margin-top: -20px;}
+.fmt25{margin-top: -25px;}
+.fmt30{margin-top: -30px;}
+.fmt33{margin-top: -33px;}
+.fmt35{margin-top: -35px;}
+.fmt37{margin-top: -37px;}
+.fmt40{margin-top: -40px;}
+.fmt42{margin-top: -42px;}
+.fmt50{margin-top: -50px;}
+.fmt55{margin-top: -55px;}
+.fmt60{margin-top: -60px;}
+.fmt65{margin-top: -65px;}
+.fmt70{margin-top: -70px;}
+.fmt80{margin-top: -80px;}
+.fmt100{margin-top: -100px;}
+.fmt200{margin-top: -200px;}
+.fmt300{margin-top: -300px;}
+.fmt400{margin-top: -400px;}
+.fmt415{margin-top: -415px;}
+.fmt800{margin-top: -800px;}
+
+
+.fml10{margin-left:-10px;}
+.fml20{margin-left:-20px;}
+.fml30{margin-left:-30px;}
+
+.mt2{margin-top: 2px;}
+.mt3{margin-top: 3px;}
+.mt4{margin-top: 4px;}
+.mt5{margin-top: 5px;}
+.mt6{margin-top: 6px;}
+.mt7{margin-top: 7px;}
+.mt8{margin-top: 8px;}
+.mt9{margin-top: 9px;}
+.mt10{margin-top: 10px;}
+.mt11{margin-top: 11px;}
+.mt12{margin-top: 12px;}
+.mt13{margin-top: 13px;}
+.mt14{margin-top: 14px;}
+.mt15{margin-top: 15px;}
+
+.mt16{margin-top: 16px;}
+.mt17{margin-top: 17px;}
+.mt18{margin-top: 18px;}
+.mt19{margin-top: 19px;}
+
+.mt20{margin-top: 20px;}
+.mt25{margin-top: 25px;}
+.mt30{margin-top: 30px;}
+.mt40{margin-top: 40px;}
+.mt50{margin-top: 50px;}
+.mt60{margin-top: 60px;}
+.mt70{margin-top: 70px;}
+.mt80{margin-top: 80px;}
+.mt90{margin-top: 90px;}
+.mt100{margin-top: 100px;}
+.mt150{margin-top: 150px;}
+
+
+.mb10{margin-bottom: 10px;}
+.mb20{margin-bottom:20px;}
+.mb30{margin-bottom:30px;}
+.mb40{margin-bottom:40px;}
+.mb50{margin-bottom:50px;}
+
+.mr5{margin-right: 5px;}
+.mr10{margin-right: 10px;}
+.mr20{margin-right: 20px;}
+.mr30{margin-right: 30px;}
+.mr40{margin-right: 40px;}
+.mr50{margin-right: 50px;}
+.mr60{margin-right: 60px;}
+.mr70{margin-right: 70px;}
+.mr80{margin-right: 80px;}
+
+.ml5{margin-left:5px;}
+.ml10{margin-left: 10px;}
+.ml20{margin-left: 20px;}
+.ml30{margin-left: 30px;}
+.ml40{margin-left: 40px;}
+.ml50{margin-left: 50px;}
+.ml60{margin-left: 60px;}
+.ml90{margin-left: 90px;}
+.ml120{margin-left: 120px;}
+.ml150{margin-left: 150px;}
+
+.fml10{margin-left:-10px;}
+
+.plr5{padding:0 5px 0 5px;}
+.plr10{padding:0 10px 0 10px;}
+.plr20{padding:0 20px 0 20px;}
+
+.pd1{padding: 1px;}
+.pd2{padding:2px;}
+.pd3{padding: 3px;}
+.pd4{padding:4px;}
+.pd5{padding: 5px;}
+.pd7{padding: 7px;}
+.pd10{padding: 10px;}
+.pd15{padding: 15px;}
+.pd20{padding:20px;}
+.pd25{padding:25px;}
+.pd30{padding: 30px;}
+
+.pl10{padding-left:10px;}
+.pl20{padding-left:20px;}
+.pl30{padding-left:30px;}
+.pl40{padding-left:40px;}
+.pl50{padding-left:50px;}
+
+.pr10{padding-right:20px;}
+
+.pr10{padding-right:10px;}
+.pic_box_shadow{
+	box-shadow: 0px 10px 10px #888888;
+}
+.headmenu_box_shadow{
+	box-shadow: 0px 10px 10px #888888;
+}
+
+.ls{letter-spacing: 5px;}
+
+.yuan, .yuan1{
+	border-radius: 25px; 
+	background-color: #fff; 
+	width: 25px; 
+	height: 25px; 
+	line-height: 24px; 
+	
+	color: #0085ad;
+	float: left;
+	margin-right: 10px;
+}
+
+.yuan{padding-left: 9px;}
+
+.yuan1{
+	
+	padding-left: 6px;
+	
+}
+
+.fl{float: left;}
+
+.bhh{white-space:nowrap;  }
+
+.cc{color: #0085ad;}
+
+ul{list-style: none;}
+
+.bodyleft{
+	float: left;
+	width: 72.5%;
+	border:1px solid #FCDB80;
+	height: 1170px;
+}
+.bodyright{
+	float: left;
+	width: 26%;
+	border:1px solid #FCDB80;
+	height: 1170px;
+	margin-left: 1.5%;
+}
+
+.menuTitle{
+	color: #FCDB80;
+	font-size: 16px;
+	font-weight:bold;
+}
+.addressTitle{
+	color:#020216;
+	font-size: 15px;
+}

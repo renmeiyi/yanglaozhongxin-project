@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>床位管理</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="../About/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../About/css/myCss.css" rel="stylesheet">
+    <link href="../About/css/main.css" rel="stylesheet">
+    <link href="../About/css/base.css" rel="stylesheet">
+    <!-- 其他 CSS 链接 -->
+    <script src="../About/js/jquery.min.js"></script>
+    <script src="../About/js/bootstrap.min.js"></script>
+    <script src="../node_modules/axios/dist/axios.js"></script>
+    <script src="../node_modules/vue/dist/vue.global.js"></script>
+
+    <style>
+		.pad {
+			padding:16px;
+			font-size: 14px;
+		}
+		.pad-max {
+			padding:16px;
+			font-size: 18px;
+		}
+		.bed{
+			width:30px;
+		}
+		.beds{
+			margin-top: 20%;
+		}
+		.bed-roomid{
+			margin-top: 15%;
+		}
+		
+		.width_tjtjxx_l{
+			text-align: right;
+			width: 80px;
+		}
+		.cw_img{
+			width:25px;
+			float: left;
+		}
+		.cw_img img{
+			width:100%;
+			height: 100%;
+		}
+		.cw_num{
+			padding-left: 5px;
+		}
+		.cwsyt_thead{
+			background-color: #0168b7;
+		}
+		.cwsyt_tbody{
+			height: 120px;
+			text-align: center;
+		}
+		.room_id{
+			color:white;
+			width: 100px;
+			height: 20px;
+			text-align: center;
+		}
+		.cw_img_lg{
+			width:50px;
+		}
+		.cw_img_lg img{
+			width:100%;
+			height: 100%;
+			margin-left: 55%;
+		}
+		.ml15{
+			margin-left: 15px;
+		}
+		label{
+			margin-left: 15px;
+		}
+		.list_style{
+			list-style: disc outside none;
+		}
+		#jcsjwh_ck input{
+			background-color: white;
+		}
+	</style>
+
+
+
+
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="输入床位状态/ID/床号" v-model="searchQuery">
+
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" @click="searchBed">查询</button>
+                    </div>
+                </div>
+                <button class="btn btn-success mb-3" @click="addBedModal">添加床位</button>
+
+
+                <div class="col-md-12 pd0">
+                    <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>状态</th>
+                                        <th>姓名</th>
+                                        <th>性别</th>
+                                        <th>床位使用起始日期</th>
+                                        <th>床位使用结束日期</th>
+                                        <th>床位详细信息</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="bed in searchResult" :key="bed.id">
+                                    <td class="mb-1">{{ bed.id }}</td>
+                                    <td>{{ bed.recordNumber }}</td>
+                                    <td>{{ bed.name }}</td>
+                                    <td>{{ bed.gender }}</td>
+                                    <td>{{ bed.bedStartDate }}</td>
+                                    <td>{{ bed.bedEndDate }}</td>
+                                    <td>{{ bed.bedDetails }}</td>
+                                    <td></td>
+                                    <td>
+                                    <button class="btn btn-warning btn-sm" @click="editBed(bed)">修改</button>
+                                    <button class="btn btn-danger btn-sm" @click="deleteBed(bed.id)">删除</button>
+									</td>
+                                </tr>
+                                </tbody>
+                                
+                            </div>
+                            
+                        </tr>
+                    </table>
+                    
+                    <div v-if="searchQuery && !searchResult.length" class="list-group-item">未找到床位信息。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/修改床位模态框 -->
+    <div class="modal fade" id="bedModal" tabindex="-1" role="dialog" aria-labelledby="bedModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bedModalLabel" v-if="!currentBed.id">添加床位</h5>
+                    <h5 class="modal-title" id="bedModalLabel" v-if="currentBed.id">修改床位</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recordNumber">床位状态</label>
+                            <!--<input type="text" class="form-control" id="recordNumber" v-model="currentBed.recordNumber" required>-->
+                            <select class="form-control" id="recordNumber" v-model="currentBed.recordNumber" required>
+                                <option value="占用">占用</option>
+                                <option value="无人">无人</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">床位名称</label>
+                            <input type="text" class="form-control" id="name" v-model="currentBed.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">性别</label>
+                            <select class="form-control" id="gender" v-model="currentBed.gender" required>
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bedDetails">床位详细信息</label>
+                            <input type="text" class="form-control" id="bedDetails" v-model="currentBed.bedDetails" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bedStartDate">床位使用起始日期</label>
+                            <input type="date" class="form-control" id="bedStartDate" v-model="currentBed.bedStartDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bedEndDate">床位使用终止日期</label>
+                            <input type="date" class="form-control" id="bedEndDate" v-model="currentBed.bedEndDate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" @click="saveBed">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                searchQuery: '',
+                beds: [],
+                searchResult: [],
+                currentBed: {
+                    id: null,
+                    recordNumber: '',
+                    name: '',
+                    gender: '',
+                    bedDetails: '',
+                    bedStartDate: '', // 添加床位使用起始日期
+                    bedEndDate: '',   // 添加床位使用终止日期
+                }
+            };
+        },
+        methods: {
+            fetchBeds() {
+                axios.get("http://localhost:8080/beds/list?page=1&size=10")
+                    .then(response => {
+                        this.beds = response.data;
+                        this.searchResult = response.data;
+                    })
+                    .catch(error => {
+                        console.error("加载床位信息出错:", error);
+                    });
+            },
+            searchBed() {
+                if (!this.searchQuery) {
+                    // 如果没有输入搜索内容，则显示所有床位
+                    this.searchResult = this.beds;
+                    return;
+                }
+                this.searchResult = this.beds.filter(bed =>
+                    bed.recordNumber.includes(this.searchQuery) ||
+                    bed.name.includes(this.searchQuery) ||
+                    bed.bedDetails.includes(this.searchQuery)
+                );
+            },
+            addBedModal() {
+                this.currentBed = { id: null, recordNumber: '', name: '', gender: '', bedDetails: '', bedStartDate:'',bedEndDate:''};
+                $('#bedModal').modal('show');
+            },
+            editBed(bed) {
+                this.currentBed = Object.assign({}, bed);
+                $('#bedModal').modal('show');
+            },
+            deleteBed(id) {
+                axios.delete(`http://localhost:8080/beds/delete/${id}`)
+                    .then(response => {
+                        this.fetchBeds();
+                    })
+                    .catch(error => {
+                        console.error("删除床位信息出错:", error);
+                    });
+            },
+            saveBed() {
+                if (this.currentBed.id) {
+                    axios.post("http://localhost:8080/beds/update", this.currentBed)
+                        .then(response => {
+                            $('#bedModal').modal('hide');
+                            this.fetchBeds();
+                        })
+                        .catch(error => {
+                            console.error("更新床位信息出错:", error);
+                        });
+                } else {
+                    axios.post("http://localhost:8080/beds/add", this.currentBed)
+                        .then(response => {
+                            $('#bedModal').modal('hide');
+                            this.fetchBeds();
+                        })
+                        .catch(error => {
+                            console.error("添加床位信息出错:", error);
+                        });
+                }
+            }
+        },
+        mounted() {
+            this.fetchBeds();
+        }
+    }).mount("#app");
+</script>
+</body>
+</html>

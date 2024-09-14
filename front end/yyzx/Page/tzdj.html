@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../About/css/bootstrap.min.css">
+		<link href="../About/css/myCss.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/main.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/base.css" type="text/css" rel="stylesheet">
+		<!--按钮样式表-->
+		<link href="../About/css/btn.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/css.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/index.css" type="text/css" rel="stylesheet">
+		<link href="../About/css/search.css" type="text/css" rel="stylesheet">
+		<script src="../About/js/jquery.min.js"></script>
+		<script src="../About/js/bootstrap.min.js"></script>
+
+		<script src="../node_modules/axios/dist/axios.js"></script>
+		<script src="../node_modules/vue/dist/vue.global.js"></script>
+
+		<!-- 支持模糊搜索的 下拉框 -->
+		<link rel="stylesheet" type="text/css" href="../About/css/bootstrap-select.min.css"/> 
+		<script type="text/javascript" src="../About/js/bootstrap-select.min.js"></script>
+		<title>退住登记</title>
+		<script type="text/javascript">
+		$(function(){
+
+		})
+		</script>
+	</head>
+	<body>
+		<div class="hlnr page" id="app">
+			<div class="col-md-12 pd20 RightContentBody fmt10">
+				<div class="col-md-3 pd0 fmt5">
+					<div class="input-group inputWidth_search" >
+						<input type="text" class="form-control" placeholder="客户姓名" v-model="queryCheckout">
+						<span class="input-group-addon" v-on:click="queryc">查询</a></span>								
+					</div>
+				</div>
+				<div class="col-md-9 pd0 fmt5">
+					<button class="btn btn-primary" data-toggle="modal" data-target=".myModal1"><span class="glyphicon glyphicon-plus"></span>&nbsp;退住办理</button>
+					<!--<button class="btn btn-success" data-toggle="modal" data-target=".myModal2"><span class="glyphicon glyphicon-plus"></span>&nbsp;审核</button>-->
+				</div>			
+				<div class="modal fade myModal1">
+					<div class="modal-dialog">
+						<div class="modal-content" style="width:100%;">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<span class="glyphicon glyphicon-pencil"></span>&nbsp;【退住信息】
+							</div>
+							<div class="modal-body clearfix" style="height: auto;">
+								<div class="col-md-12 pd0">
+									<div class="col-md-1 pd0 mt10"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;客户：</span>
+												<select class="form-control" v-model="customerId">
+													<option v-for="customer in customers" :value="customer.customerId" :key="customer.customerId">
+														{{ customer.customerName }}
+													</option>
+												</select>							
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>							
+								<div class="col-md-12 pd0 mt10">
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;退住类型：</span>
+												<select class="form-control" v-model="checkOutType">
+													<option>正常退住</option>
+													<option>死亡退住</option>
+													<option>保留床位</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+								<div class="col-md-12 pd0 mt10">
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;退住原因：</span>
+												<input type="text" class="form-control" v-model="checkOutReason">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+								<div class="col-md-12 pd0 mt10">
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;退住时间：</span>
+												<input type="date" class="form-control" v-model="checkOutDate">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+								<div class="col-md-12 pd0 mt10">
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;申请时间：</span>
+												<input type="date" class="form-control" v-model="applicationDate">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+								<div class="col-md-12 pd0 mt10">
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;备注：</span>
+												<input type="text" class="form-control" v-model="attention">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+							</div>
+							<div class="modal-footer mt20">
+								<button type="button" class="btn btn-primary" data-dismiss="modal"
+								v-on:click="addOrUpdateCheckout()">
+									确定
+								</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									取消
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal fade myModal2">
+					<div class="modal-dialog">
+						<div class="modal-content" style="width:100%;">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<span class="glyphicon glyphicon-pencil"></span>&nbsp;【审核】
+							</div>
+							<div class="modal-body clearfix" style="height: auto;">
+								<div class="col-md-12 pd0">
+									<div class="col-md-1 pd0 mt10"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;审核状态：</span>
+												<select class="form-control" v-model="reviewStatus">
+													<option value="通过">通过</option>
+													<option value="不通过">不通过</option>
+													<option value="撤销">撤销</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+								<div class="col-md-12 pd0 mt10">
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;审核意见：</span>
+												<input type="text" class="form-control" v-model="reviewComments">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+								<div class="col-md-12 pd0 mt10"></div>
+									<div class="col-md-1 pd0"></div>
+									<div class="col-md-10 pd0">
+										<div class="col-md-12 pd0">
+											<div class="input-group inputWidth">
+												<span class="input-group-addon titleWidth">&nbsp;&nbsp;审核时间：</span>
+												<input type="date" class="form-control" v-model="reviewDate">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1 pd0"></div>
+								</div>
+							</div>
+							<div class="modal-footer mt20">
+								<button type="button" class="btn btn-primary" data-dismiss="modal"
+								v-on:click="addOrUpdateCheckout()">
+									确定
+								</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									取消
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>								
+				<div class="col-md-12 pd0 fmt10">
+					<hr class="commonHRCss"/>
+				</div>
+				<div class="col-md-12 pd0">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>客户姓名</th>
+								<th>性别</th>
+								<th>年龄</th>
+								<th>档案号</th>
+								<th>入住时间</th>
+								<th>退住时间</th>
+								<th>退住类型</th>
+								<th>退住原因</th>
+								<th>状态</th>
+								<th>申请时间</th>
+								<th>审核意见</th>
+								<th>审核人</th>
+								<th>审核时间</th>
+								<th>备注</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(item, index) in checkoutList" :key="index">
+								<td>{{index+1}}</td>
+								<td>{{item.customerName}}</td>
+								<td>{{item.customerSex==0? '女' : '男'}} </td>
+								<td>{{item.customerAge}}</td>
+								<td>{{item.recordId}}</td>
+								<td>{{item.checkinDate}}</td>
+								<td>{{item.checkOutDate}}</td>
+								<td>{{item.checkOutType}}</td>
+								<td>{{item.checkOutReason}}</td>
+								<td>{{item.reviewStatus}}</td>
+								<td>{{item.applicationDate}}</td>
+								<td>{{item.reviewComments}}</td>
+								<td>{{item.reviewer}}</td>
+								<td>{{item.reviewDate}}</td>
+								<td></td>
+								<td>
+									<button class="btn btn-primary" data-toggle="modal" data-target=".myModal1"
+									v-on:click="modify(item.id,index)">修改</button>
+									<button class="btn btn-danger" v-on:click="remove(item.id)">删除</button>
+									<button class="btn btn-success" data-toggle="modal" data-target=".myModal2"
+									v-on:click="review(item.id,index)">审核</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-12 pd0">
+					<div class="col-md-12 text-right pd0 fmt20">
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								<li @click="previousPage">
+									<a href="#" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</li>
+								<li v-for="(item, index) in pages" :key="index"><a v-on:click="listcheckout(index+1, size)">{{index+1}}</a></li>
+								
+								<li @click="nextPage">
+									<a href="#" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script>
+	const app = Vue.createApp({
+		data: function () {
+			return {
+				customers: [],        // 用于存储客户列表
+				currentPage: 1,
+				size: 10,
+				
+				checkoutList: null,
+				pages: 0,
+				total: 0,
+				
+				queryCheckout:'',
+
+				id: null,
+        		customerId: null,
+        		checkOutDate: null,
+        		checkOutType: null,
+        		checkOutReason: null,
+        		applicationDate: null,
+        		reviewStatus: null,
+        		reviewComments: null,
+        		reviewer: null,
+        		reviewDate: null,
+        		attention: null,
+        		customerName: '',
+        		customerAge: null,
+        		customerSex: null,
+        		recordId: null,
+        		checkinDate: null,
+			}
+		},
+		methods: {
+
+			// 获取客户列表
+			customer: function () {
+				axios.get("http://localhost:8080/currentcustomer")
+					.then(res => {
+				if (res.data) {
+					// 假设响应数据是客户对象的数组
+					this.customers = res.data.map(customer => ({
+						customerId: customer.id,  // 将 'id' 映射为 'customerId'
+						customerName: customer.customerName
+					}));
+					console.log("客户信息: ", this.customers);
+				} else {
+					console.warn("没有找到客户数据。");
+				}
+			})
+			.catch(err => {
+				console.error("获取客户数据时出错:", err);
+			});
+			},
+			// 查询 checkout 列表
+			listcheckout: function (page, size) {
+				this.currentPage = page;
+				axios.get("http://localhost:8080/listcheckout", { params: { page, size } })
+					.then(res => {
+						this.checkoutList = res.data.list;
+						this.pages = res.data.pages;
+						this.total = res.data.total;
+					})
+					.catch(err => {
+						console.error(err);
+					});
+			},
+			queryc: function () {
+				console.log("--------------------------",this.queryCheckout);
+				if (this.queryCheckout) {
+					axios.get("http://localhost:8080/querycheckoutByname", { params: { name: this.queryCheckout } })
+						.then(res => {
+							this.checkoutList = res.data;
+							console.log("Checkout List: ", this.checkoutList);
+						})
+						.catch(err => {
+							console.error(err);
+						});
+				} else {
+					this.listcheckout(this.currentPage, this.size);
+				}	
+			},
+			nextPage:function(){
+				if(this.currentPage<this.pages){
+					this.currentPage+=1,
+					this.listcheckout(this.currentPage, this.size)
+				}
+			},
+			previousPage:function(){
+				if(this.currentPage>1){
+					this.currentPage-=1
+					this.listcheckout(this.currentPage, this.size)
+				}
+			},
+			newCheckout(){
+				this.id=null;
+				this.customerId=null;
+				this.checkOutType=null;
+				this.checkOutReason=null;
+				this.reviewStatus=null;
+				this.checkOutDate=null,
+				this.applicationDate=null;
+				this.attention = null;
+			},
+			modify(id, index) {
+   				var c = this.checkoutList[index];
+				   this.id = c.id;
+    			this.customerId = c.customerId;  
+    			this.checkOutType = c.checkOutType;
+    			this.checkOutReason = c.checkOutReason;
+    			this.reviewStatus = c.reviewStatus;
+				this.checkOutDate=c.checkOutDate,
+    			this.applicationDate = c.applicationDate;
+    			this.attention = c.attention;
+			},
+			remove: function (id) {
+				axios.delete("http://localhost:8080/removecheckout", { params: { id } })
+					.then(res => {
+						if (res.data == 'success') {
+							this.listcheckout(this.currentPage, this.size);
+						}
+					})
+					.catch(err => {
+						console.error(err);
+					})
+			},
+			review(id, index) {
+				var c = this.checkoutList[index];
+    			this.id = c.id;
+    			this.reviewStatus = c.reviewStatus;
+    			this.reviewComments = c.reviewComments;
+				this.reviewDate =c.reviewDate;
+			},
+			addOrUpdateCheckout: function (id) {
+				data = {
+					id: this.id,
+					customerId: this.customerId,
+					checkOutType: this.checkOutType,
+					checkOutReason: this.checkOutReason,
+					checkOutDate:this.checkOutDate,
+					reviewStatus: this.reviewStatus,
+					reviewComments:this.reviewComments,
+					reviewDate:this.reviewDate,
+					applicationDate: this.applicationDate,
+					attention: this.attention
+				}
+
+				axios.post("http://localhost:8080/addOrUpdateCheckout", data, {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+					.then(res => {
+						console.log(res.data);
+						if (res.data === 'success') {
+							this.listcheckout(this.currentPage, this.size);
+						}
+					})
+					.catch(err => {
+						console.error(err);
+					});
+			}
+		},
+		created() {
+			this.listcheckout(1, 10);
+			this.customer(); // 页面创建时调用 customer() 方法，获取客户信息
+		},
+
+	}).mount("#app")
+</script>
+

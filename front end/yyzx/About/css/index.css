@@ -1,0 +1,51 @@
+.boxHeight{
+	height:235px;
+}
+.leftBox{
+	height: 500px;
+
+}
+.leftBoxContent{
+	height:482px;
+	margin-top: -5px;
+	border: 2px solid #FCDB80;
+	background-image: url(../images/index/u159.png);
+	background-size: 100% 100%;
+}
+.tmDiv{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.6);
+}
+.headbody{
+	border-bottom:2px solid #FCDB80;
+	height: 70px;
+	width: 100%;
+}
+.headbody_contentBorder{
+	border:2px solid #FCDB80;
+	height: 40px;
+	border-radius: 10px;
+	background-color: rgba(2,2,22,0.9);
+}
+.contentbody{
+	width: 100%;
+	height: 408px;
+	overflow-y: scroll;
+}
+.tdCss{
+	padding-top: 5px;
+	padding-left: 10px;
+}
+.hrCss{
+	border-top:0.1px dashed #3B3B3B;
+}
+.leftCss{
+	border-top:0.1px dashed #121212;
+}
+.manCss{
+	border-top:1px solid #FCDB80;
+}
+.pageHR{
+	border:1px solid  #595959;
+}
