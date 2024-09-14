@@ -3,14 +3,14 @@
 
 运行截图：
 
-![](G:\yanglaozhongxin-project\img\image-20240914114108765.png)
+![](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114108765.png?raw=true)
 
-![image-20240914114120515](G:\yanglaozhongxin-project\img\image-20240914114120515.png)
+![image-20240914114120515](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114120515.png?raw=true)
 
-![image-20240914114131471](G:\yanglaozhongxin-project\img\image-20240914114131471.png)
+![image-20240914114131471](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114131471.png?raw=true)
 
-![image-20240914114138618](G:\yanglaozhongxin-project\img\image-20240914114138618.png)
+![image-20240914114138618](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114131471.png?raw=true)
 
-![image-20240914114147087](G:\yanglaozhongxin-project\img\image-20240914114147087.png)
+![image-20240914114147087](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114147087.png?raw=true)
 
-![image-20240914114231956](G:\yanglaozhongxin-project\img\image-20240914114231956.png)
+![image-20240914114231956](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114231956.png?raw=true)
