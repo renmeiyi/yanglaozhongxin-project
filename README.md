@@ -9,7 +9,7 @@
 
 ![image-20240914114131471](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114131471.png?raw=true)
 
-![image-20240914114138618](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114131471.png?raw=true)
+![image-20240914114138618](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114138618.png?raw=true)
 
 ![image-20240914114147087](https://github.com/renmeiyi/yanglaozhongxin-project/blob/master/img/image-20240914114147087.png?raw=true)
 
